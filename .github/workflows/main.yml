@@ -4,6 +4,7 @@ on: [push]
 
 env: 
   PROJECT_ID: main-104
+  SERVICE_NAME: simpleserver
 
 jobs:
   build:
@@ -14,7 +15,7 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Build the Docker Image 
-      run: docker build simpleserver -t gcr.io/main-104/simplserver
+      run: docker build simpleserver -t gcr.io/main-104/$SERVICE_NAME
     
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
@@ -24,13 +25,13 @@ jobs:
     - run: gcloud auth configure-docker
 
     - name: Push image
-      run: docker push gcr.io/$PROJECT_ID/simplerver
+      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
     - name: Cloud Run Deploy 
         run: |
-          gcloud run deploy simpleserver \
+          gcloud run deploy $SERVICE_NAME \
             --project $PROJECT_ID \
-            --image gcr.io/$PROJECT_ID/simplerver \
+            --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
