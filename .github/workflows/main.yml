@@ -9,5 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      
     - name: Build the Docker Image 
-      run: docker build . --file ./simpleserver/Dockerfile
+      run: docker build simpleserver -t gcr.io/main-104/helloworld
+
+#    - name: Push image
+#      run: docker push gcr.io/main-104/helloworld
