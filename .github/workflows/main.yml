@@ -2,6 +2,9 @@ name: CI
 
 on: [push]
 
+env: 
+  PROJECT_ID: main-104
+
 jobs:
   build:
 
@@ -11,7 +14,7 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Build the Docker Image 
-      run: docker build simpleserver -t gcr.io/main-104/helloworld
+      run: docker build simpleserver -t gcr.io/main-104/simplserver
     
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
@@ -19,7 +22,17 @@ jobs:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
     
     - run: gcloud auth configure-docker
-      
 
     - name: Push image
-      run: docker push gcr.io/main-104/helloworld
+      run: docker push gcr.io/$PROJECT_ID/simplerver
+    
+    - name: Cloud Run Deploy 
+        run: |
+          gcloud run deploy simpleserver \
+            --project $PROJECT_ID \
+            --image gcr.io/$PROJECT_ID/simplerver \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --memory 512M 
+    
