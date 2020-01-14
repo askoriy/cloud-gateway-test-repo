@@ -28,7 +28,7 @@ jobs:
       run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
     - name: Cloud Run Deploy 
-        run: |
+      run: |
           gcloud run deploy $SERVICE_NAME \
             --project $PROJECT_ID \
             --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
