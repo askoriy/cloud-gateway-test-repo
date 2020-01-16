@@ -54,7 +54,7 @@ jobs:
 
     - name: Deploy Endpoint Service with config
       run: |
-        gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID --region=us-central1
+        gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
 
     - name: Get Endpoint Config Id
       run: |
