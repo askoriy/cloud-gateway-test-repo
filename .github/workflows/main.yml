@@ -51,6 +51,7 @@ jobs:
     - name: Envsubst
       run: |
         envsubst < ./simpleserver/openapi-run_template.yaml > ./simpleserver/openapi_conf.yaml
+        cat ./simpleserver/openapi_conf.yaml
 
     - name: Deploy Endpoint Service with config
       run: |
