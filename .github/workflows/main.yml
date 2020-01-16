@@ -7,7 +7,7 @@ on:
 
 env: 
   PROJECT_ID: main-104
-  SERVICE_NAME: simpleserver
+  SERVICE_NAME: gatewayv2
   API_GATEWAY: api-gateway-new
 
 jobs:
@@ -41,17 +41,12 @@ jobs:
     
     - name: Deploy Initial API GW Service 
       run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated --project=$PROJECT_ID --platform=managed
-        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --platform=managed | sed -e 's#^https://##; s#/score/$##' )"
+        gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated --project=$PROJECT_ID --platform=managed --region=us-central1
+        APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --platform=managed | sed -e 's#^https://##; s#/score/$##' )
 
     - name: Get Service URL
       run: |
-        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID)"
-
-    # - name: Use env var
-    #   run: |
-    #       echo $SERVICE_URL
-    #       echo $APIGW_HOST
+        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID)
     
     - name: Envsubst
       run: |
@@ -59,11 +54,20 @@ jobs:
 
     - name: Deploy Endpoint Service with config
       run: |
-        gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
+        gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID --region=us-central1
 
     - name: Get Endpoint Config Id
       run: |
-        gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID
+        CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
+
+    - name: Create Custom API GW Image
+      run: |
+          ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
+    
+
+    - name: Deploy API GW Service With Custom Image
+      run: |
+         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
 
     
 
