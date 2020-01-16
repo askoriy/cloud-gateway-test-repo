@@ -46,7 +46,7 @@ jobs:
 
     - name: Get Service URL
       run: |
-        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID)
+        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID --region=us-central1)
     
     - name: Envsubst
       run: |
@@ -58,7 +58,7 @@ jobs:
 
     - name: Get Endpoint Config Id
       run: |
-        CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
+        CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID --region=us-central1)
 
     - name: Create Custom API GW Image
       run: |
