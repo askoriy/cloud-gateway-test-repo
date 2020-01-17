@@ -61,18 +61,10 @@ jobs:
     - name: Deploy Endpoint Service with config    
       run: |
         gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
-     
-      
-    - name: Echo ENV vars
-      run: |
-        echo $SERVICE_URL
-        echo $APIGW_HOST
-        
         
     - name: Set ENV var 
       run: |
-        echo $APIGW_HOST
-        echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
+        echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
     
     - name: Echo ENV var
       run: |
