@@ -69,7 +69,7 @@ jobs:
       
     - name: BASH 
       run: |
-        echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --format="value(serviceConfig.id)" --project=main-104)"
+        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104
 
     - name: Echo ENV vars
       run: |
