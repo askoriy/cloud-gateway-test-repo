@@ -25,12 +25,20 @@ jobs:
     - name: bash
       run: |
         set -x
+        sleep 2
         export
+        sleep 2
         env
+        sleep 2
         gcloud endpoints services list --project=main-104
+        sleep 2
         gcloud endpoints services list --project=main-104 > testfile
         cat testfile
+        sleep 2
+        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104
+        sleep 2
         gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --format="value(serviceConfig.id)" --project=main-104 > testfile2
+        sleep 2
         cat testfile2
         echo '----------------------------------'
         
