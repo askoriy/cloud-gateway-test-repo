@@ -21,12 +21,12 @@ jobs:
     # - name: Build the Docker Image 
     #   run: docker build simpleserver -t gcr.io/main-104/$SERVICE_NAME
     
-    # - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-    #   with:
-    #     version: ‘274.0.0’
-    #     service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: ‘274.0.0’
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
     
-    # - run: gcloud auth configure-docker
+    - run: gcloud auth configure-docker
 
     # - name: Push image
     #   run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
