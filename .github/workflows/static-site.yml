@@ -4,12 +4,13 @@ on:
   push:
     paths: 
       - 'site/**'
+      - '**'
 
 env: 
   PROJECT_ID: main-104
   SITE_HOSTNAME: www.gcp.qipeit.com
   REGION: us-central
-    
+
 
 jobs:
   build:
@@ -18,19 +19,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-      
+
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
-    
+
     - name: Create storage bucket if not exists
       run: |
-        (gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME})
+        bucket=$(gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME})
         if [ -n "$?" ]; then
           gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME}
           gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
         fi
 
 
-      
