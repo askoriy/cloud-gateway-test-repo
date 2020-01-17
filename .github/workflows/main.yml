@@ -47,10 +47,10 @@ jobs:
       run: | 
         export APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --platform=managed | sed -e 's#^https://##; s#/score/$##' )
         export SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID --region=us-central1)
+        envsubst < simpleserver/openapi-run_template.yaml > simpleserver/openapi_conf.yaml
 
     - name: OpenApi document
       run: |  
-        envsubst < simpleserver/openapi-run_template.yaml > simpleserver/openapi_conf.yaml
         pwd
         ls -l simpleserver/openapi_conf.yaml
         cat simpleserver/openapi_conf.yaml
