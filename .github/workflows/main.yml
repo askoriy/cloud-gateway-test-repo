@@ -29,6 +29,7 @@ jobs:
     - run: |
         set -x
         gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104
+        gcloud version
 
     
     # - run: gcloud auth configure-docker
