@@ -45,8 +45,8 @@ jobs:
         
     - name: Set ENV vars
       run: | 
-        export APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=us-central1 --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )
-        export SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=us-central1 --platform=managed --project=$PROJECT_ID)
+        set-env APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=us-central1 --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )
+        set-env SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=us-central1 --platform=managed --project=$PROJECT_ID)
         envsubst < simpleserver/openapi-run_template.yaml > simpleserver/openapi_conf.yaml
 
     - name: Deploy Endpoint Service with OpenApi document
@@ -56,7 +56,7 @@ jobs:
         
     - name: Create Custom API GW Image
       run: |
-        export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
+        set-env CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
         echo $APIGW_HOST
         simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
