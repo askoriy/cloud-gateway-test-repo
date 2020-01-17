@@ -28,8 +28,11 @@ jobs:
         export
         env
         script -c 'gcloud endpoints services list --project=main-104'
+        cat typescript
         script -c 'gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104'
+        cat typescript
         script -c 'gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --format="value(serviceConfig.id)" --project=main-104'
+        cat typescript
         echo '----------------------------------'
         
         
