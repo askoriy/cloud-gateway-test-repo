@@ -1,9 +1,11 @@
-name: CI
+name: API Gateway Deploy
 
 on:
   push:
     branches:
       - 'master'
+    paths: 
+      - 'api-gw/**'
 
 env: 
   PROJECT_ID: main-104
