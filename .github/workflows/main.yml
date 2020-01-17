@@ -70,15 +70,16 @@ jobs:
     - name: BASH 
       run: |
         CONFIG_ID=$(./simpleserver/var.sh $APIGW_HOST $PROJECT_ID)
+        echo $CONFIG_ID
 
-    - name: Create Custom API GW Image
-      run: |
-        ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
+    # - name: Create Custom API GW Image
+    #   run: |
+    #     ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
 
-    - name: Deploy API GW Service With Custom Image
-      run: |
-         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-2020-01-17r11" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
+    # - name: Deploy API GW Service With Custom Image
+    #   run: |
+    #      gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-2020-01-17r11" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
 
     
 
