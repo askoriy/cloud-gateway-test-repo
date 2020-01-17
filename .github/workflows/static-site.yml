@@ -1,4 +1,4 @@
-name: static-site
+name: Deploy static site
 
 on:
   push:
@@ -26,7 +26,8 @@ jobs:
     
     - name: Create storage bucket if not exists
       run: |
-        if ! gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME}/ ; then
+        (gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME})
+        if [ -n "$?" ]; then
           gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME}
           gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
         fi
