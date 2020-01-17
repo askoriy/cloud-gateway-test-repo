@@ -9,7 +9,7 @@ on:
 env: 
   PROJECT_ID: main-104
   SITE_HOSTNAME: www.gcp.qipeit.com
-  REGION: us-central
+  REGION: us-central1
 
 
 jobs:
@@ -42,8 +42,8 @@ jobs:
 
     - name: Create storage bucket if not exists
       run: |
-        echo gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
+        #echo gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
         gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
-        #gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
+        gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
 
 
