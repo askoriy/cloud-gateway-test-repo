@@ -56,7 +56,7 @@ jobs:
         
     - name: Create Custom API GW Image
       run: |
-        export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID --platform=managed)
+        export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
         echo $APIGW_HOST
         simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
