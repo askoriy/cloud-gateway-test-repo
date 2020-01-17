@@ -53,7 +53,6 @@ jobs:
         echo $SERVICE_URL
         echo $APIGW_HOST
         
-
     - name: Create OpenApi document
       run: |
         envsubst < simpleserver/openapi-run_template.yaml > simpleserver/openapi_conf.yaml
@@ -67,6 +66,7 @@ jobs:
       run: |
         echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
         echo $CONFIG_ID
+        echo $PROJECT_ID
         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
 
