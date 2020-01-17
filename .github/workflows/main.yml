@@ -29,7 +29,7 @@ jobs:
     - run: gcloud auth configure-docker
 
     - name: Push image
-       run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
     - name: Cloud Run Deploy 
       run: |
