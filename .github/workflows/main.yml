@@ -69,7 +69,7 @@ jobs:
       
     - name: BASH 
       run: |
-        sh ./simpleserver/var.sh $APIGW_HOST $PROJECT_ID
+        CONFIG_ID=$(./simpleserver/var.sh $APIGW_HOST $PROJECT_ID)
 
     - name: Create Custom API GW Image
       run: |
