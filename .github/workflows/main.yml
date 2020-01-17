@@ -62,11 +62,13 @@ jobs:
       run: |
         gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
         
-    - name: Create Custom API GW Image
+    - name: Set ENV var
       run: |
         echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
+
+    - name: Create Custom API GW Image
+      run: |
         echo $CONFIG_ID
-        echo $PROJECT_ID
         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
 
