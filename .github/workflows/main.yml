@@ -62,17 +62,20 @@ jobs:
       run: |
         gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
         
-    - name: Set ENV var 
-      run: |
-        echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
+    # - name: Set ENV var CONFIG_ID
+    #   run: |
+    #     echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
     
-    - name: Echo ENV var
+    - name: Export var
       run: |
-        echo $CONFIG_ID
+         export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST  --format="value(serviceConfig.id)" --project=$PROJECT_ID)
+         echo $CONFIG_ID
+         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
+         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
       
-    - name: Create Custom API GW Image
-      run: |
-        ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
+    # - name: Create Custom API GW Image
+    #   run: |
+    #     ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
     
 
     - name: Deploy API GW Service With Custom Image
