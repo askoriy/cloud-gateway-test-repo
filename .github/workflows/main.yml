@@ -28,6 +28,7 @@ jobs:
 
     - run: |
         set -x
+        gcloud version
         gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104
         gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104 > tempfile
         ls -l tempfile
