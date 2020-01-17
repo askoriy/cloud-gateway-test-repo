@@ -69,7 +69,10 @@ jobs:
       
     - name: BASH 
       run: |
-        CONFIG_ID=$(./simpleserver/var.sh $APIGW_HOST $PROJECT_ID)
+        echo "::set-env name=CONFIG_ID::$(./simpleserver/var.sh $APIGW_HOST $PROJECT_ID)"
+
+    - name: Echo ENV vars
+      run: |
         echo $CONFIG_ID
 
     # - name: Create Custom API GW Image
