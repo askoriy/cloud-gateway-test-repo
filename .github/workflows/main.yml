@@ -59,6 +59,7 @@ jobs:
       run: |
         pwd
         ls -la ./simpleserver/openapi_conf.yaml 
+        cat simpleserver/openapi_conf.yaml
         gcloud --verbosity=debug endpoints services deploy simpleserver/openapi_conf.yaml --project=$PROJECT_ID
         
     - name: Get Endpoint Config Id
