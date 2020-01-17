@@ -62,11 +62,15 @@ jobs:
       run: |
         gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
         
-    - name: Set ENV var CONFIG_ID
-      run: |
-         echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
-        #  ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c 2020-01-17r11 -p $PROJECT_ID
+    # - name: Set ENV var CONFIG_ID
+    #   run: |
+    #     echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
+    #     ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c 2020-01-17r11 -p $PROJECT_ID
       
+    - name: BASH 
+      run: |
+        sh ./simpleserver/var.sh $APIGW_HOST $PROJECT_ID
+
     - name: Create Custom API GW Image
       run: |
         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
