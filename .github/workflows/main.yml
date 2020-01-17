@@ -43,21 +43,17 @@ jobs:
       run: |
         gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated --project=$PROJECT_ID --platform=managed --region=us-central1
         export APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --platform=managed | sed -e 's#^https://##; s#/score/$##' )
-        echo $APIGW_HOST
-
-    - name: Get Service URL
-      run: |
         export SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID --region=us-central1)
-        echo $SERVICE_URL
-    
-    - name: Envsubst
-      run: |
         envsubst < ./simpleserver/openapi-run_template.yaml > ./simpleserver/openapi_conf.yaml
+        pwd
+        ls -l ./simpleserver/openapi_conf.yaml
 
     - name: Deploy Endpoint Service with config
       run: |
+        pwd
+        ls -la ./simpleserver/openapi_conf.yaml 
         gcloud --verbosity=debug endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
-
+        
     - name: Get Endpoint Config Id
       run: |
         export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID --region=us-central1)
