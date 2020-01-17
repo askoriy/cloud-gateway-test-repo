@@ -25,6 +25,21 @@ jobs:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
 
+    - name: test
+      run: |
+        echo '\nshow exports:'
+        export
+        echo '\nshow env:'
+        env
+        echo 'current dir:'
+        pwd
+        ls -la
+        echo 'list root fs:'
+        ls -l /
+        hh=$(cat /etc/hostname)
+        echo $hh
+
+
     - name: Create storage bucket if not exists
       run: |
         bucket=$(gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME})
