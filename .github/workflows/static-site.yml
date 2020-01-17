@@ -42,7 +42,8 @@ jobs:
 
     - name: Create storage bucket if not exists
       run: |
+        echo gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
         gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
-        gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
+        #gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
 
 
