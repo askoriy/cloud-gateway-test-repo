@@ -16,11 +16,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-      
+
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: ‘274.0.0’
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
+
     - name: bash
       run: |
         set -x
         export
         env
         gcloud endpoints services list --project=main-104
+        gcloud endpoints services list --project=main-104 > testfile
+        cat testfile
+        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --format="value(serviceConfig.id)" --project=main-104 > testfile2
+        cat testfile2
+        echo '----------------------------------'
+        
+        
         
