@@ -1,39 +1,35 @@
 swagger: '2.0'
-  info:
-    title: Cloud Endpoints + Cloud Run
-    description: Sample API on Cloud Endpoints with a Cloud Run backend
-    version: 1.0.0
-  host: $APIGW_HOST
-  schemes:
-    - https
-  produces:
-    - application/json
-  x-google-backend:
-    #address: https://hello-estiec4hma-uc.a.run.app
-    address: $SERVICE_URL
-  paths:
-    /hello:
-      get:
-        summary: Greet a user
-        operationId: hello
-        responses:
-          '200':
-            description: A successful response
-            schema:
-              type: string
-​
-​
-  securityDefinitions:
-    firebase:
-      authorizationUrl: ""
-      flow: "implicit"
-      type: "oauth2"
-      # Replace YOUR-PROJECT-ID with your project ID
-      x-google-issuer: "https://securetoken.google.com/main-104"
-      #x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
-      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
-      x-google-audiences: "main-104"
-​
-​
-  security:
-    - firebase: []
+info:
+  title: Cloud Endpoints + Cloud Run
+  description: Sample API on Cloud Endpoints with a Cloud Run backend
+  version: 1.0.0
+host: $APIGW_HOST
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  #address: https://hello-estiec4hma-uc.a.run.app
+  address: $SERVICE_URL
+paths:
+  /hello:
+    get:
+      summary: Greet a user
+      operationId: hello
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+securityDefinitions:
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    # Replace YOUR-PROJECT-ID with your project ID
+    x-google-issuer: "https://securetoken.google.com/main-104"
+    #x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "main-104"
+security:
+  - firebase: []
