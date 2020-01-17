@@ -28,13 +28,9 @@ jobs:
 
     - run: |
         set -x
-        gcloud version
-        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104
-        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --project=main-104 > tempfile
-        ls -l tempfile
-        cat tempfile
-        gcloud endpoints services describe api-gateway-new-estiec4hma-uc.a.run.app --format="value(serviceConfig.id)" --project=main-104
-        sleep 5
+        gcloud endpoints services list --project=main-104
+
+    
     # - run: gcloud auth configure-docker
 
     # # - name: Push image
