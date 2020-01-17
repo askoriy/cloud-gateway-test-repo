@@ -71,8 +71,7 @@ jobs:
       run: |
          export CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID)
          echo $CONFIG_ID
-         sleep 5
-         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p main-104
+         ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c 2020-01-17r11 -p main-104
       
     # - name: Create Custom API GW Image
     #   run: |
@@ -81,7 +80,7 @@ jobs:
 
     - name: Deploy API GW Service With Custom Image
       run: |
-         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
+         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-2020-01-17r11" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
 
     
 
