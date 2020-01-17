@@ -25,27 +25,24 @@ jobs:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
 
-    - name: test
-      run: |
-        echo '\nshow exports:'
-        export
-        echo '\nshow env:'
-        env
-        echo 'current dir:'
-        pwd
-        ls -la
-        echo 'list root fs:'
-        ls -l /
-        hh=$(cat /etc/hostname)
-        echo $hh
+#    - name: test
+#      run: |
+#        echo '\nshow exports:'
+#        export
+#        echo '\nshow env:'
+#        env
+#        echo 'current dir:'
+#        pwd
+#        ls -la
+#        echo 'list root fs:'
+#        ls -l /
+#        hh=$(cat /etc/hostname)
+#        echo $hh
 
 
     - name: Create storage bucket if not exists
       run: |
-        bucket=$(gsutil ls -p ${PROJECT_ID} gs://${SITE_HOSTNAME})
-        if [ -n "$?" ]; then
-          gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME}
-          gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
-        fi
+        gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${SITE_HOSTNAME} || true
+        gsutil iam ch allUsers:objectViewer gs://${SITE_HOSTNAME}
 
 
