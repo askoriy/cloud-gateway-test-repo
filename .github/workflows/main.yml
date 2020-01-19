@@ -1,14 +1,14 @@
-name: CI
+name: Bucket
 
 on:
   push:
     branches:
-      - 'master'
+      - 'bucket-ci'
 
 env: 
   PROJECT_ID: main-104
-  SERVICE_NAME: gatewayv2
-  API_GATEWAY: api-gateway-new
+  BUCKET_NAME: ci-bucket-aabbcc
+  REGION: us-central1
 
 jobs:
   build:
@@ -18,58 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       
-    - name: Build the Docker Image 
-      run: docker build simpleserver -t gcr.io/main-104/$SERVICE_NAME
     
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
     
-    - run: gcloud auth configure-docker
-
-    - name: Push image
-      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
-    
-    - name: Cloud Run Deploy 
-      run: |
-          gcloud run deploy $SERVICE_NAME \
-            --project $PROJECT_ID \
-            --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
-            --platform managed \
-            --region us-central1 
-    
-    - name: Deploy Initial API GW Service 
-      run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated --project=$PROJECT_ID --platform=managed --region=us-central1
-        APIGW_HOST=$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --platform=managed | sed -e 's#^https://##; s#/score/$##' )
-
-    - name: Get Service URL
-      run: |
-        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --platform=managed --project=$PROJECT_ID --region=us-central1)
-    
-    - name: Envsubst
-      run: |
-        envsubst < ./simpleserver/openapi-run_template.yaml > ./simpleserver/openapi_conf.yaml
-        cat ./simpleserver/openapi_conf.yaml
-
-    - name: Deploy Endpoint Service with config
-      run: |
-        gcloud endpoints services deploy ./simpleserver/openapi_conf.yaml --project=$PROJECT_ID
-
-    - name: Get Endpoint Config Id
-      run: |
-        CONFIG_ID=$(gcloud endpoints services describe $APIGW_HOST --format="value(serviceConfig.id)" --project=$PROJECT_ID --region=us-central1)
-
-    - name: Create Custom API GW Image
-      run: |
-          ./simpleserver/gcloud-build-image.sh -s $APIGW_HOST -c $CONIG_ID -p $PROJECT_ID
-    
-
-    - name: Deploy API GW Service With Custom Image
-      run: |
-         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
-
-    
-
       
+    - name: Create Bucket 
+      run: |
+        ./simpleserver/bucket_check.sh
+
