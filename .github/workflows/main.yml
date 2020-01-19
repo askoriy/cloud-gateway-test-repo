@@ -1,4 +1,4 @@
-name: CI
+name: Cloud Endpoints
 
 on:
   push:
