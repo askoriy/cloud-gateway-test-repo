@@ -29,7 +29,7 @@ jobs:
       run: |
         ./simpleserver/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME
 
-    - name: Make bucket Public
+    - name: Make bucket Publicly accesible
       run: |
          gsutil acl ch -u AllUsers:R gs://$BUCKET_NAME/
 
