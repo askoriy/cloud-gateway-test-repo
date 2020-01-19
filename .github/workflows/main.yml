@@ -27,5 +27,5 @@ jobs:
       
     - name: Create Bucket 
       run: |
-        ./simpleserver/bucket_check.sh
+        ./simpleserver/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME
 
