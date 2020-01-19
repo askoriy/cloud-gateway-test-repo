@@ -7,7 +7,7 @@ on:
 
 env: 
   PROJECT_ID: main-104
-  BUCKET_NAME: ci-bucket-aabbcc
+  BUCKET_NAME: ci-bucket-qipeit
   REGION: us-central1
 
 jobs:
