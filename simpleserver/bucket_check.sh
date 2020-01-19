@@ -10,3 +10,4 @@ if [ $? -eq 0 ]; then
 else
    echo "Name's been taken...add some sufix"
    gsutil mb -p ${PROJECT_ID} -l ${REGION} -c standard -b on gs://${BUCKET_NAME}-1234a
+fi
