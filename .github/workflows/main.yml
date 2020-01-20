@@ -22,6 +22,15 @@ jobs:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
 
+    - name: test conditions
+      run: |
+        if false; then
+          echo 'program return false'
+        else
+          echo 'program return true'
+        fi
+
+
     - name: bash
       run: |
         set -x
