@@ -9,6 +9,7 @@ env:
   PROJECT_ID: main-104
   BUCKET_NAME: ci-bucket-qipeit
   REGION: us-central1
+  FRONTEND_IMG: front-image
 
 jobs:
   build:
@@ -18,27 +19,43 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       
-    
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
-    
-      
-    - name: Create Bucket 
-      run: |
-        ./simpleserver/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME 
-
-    - name: Make bucket Publicly accesible 
-      run: |
-         gsutil acl ch -u AllUsers:R gs://$BUCKET_NAME/
-
-    - name: Add files to the bucket 
-      run: |
-         gsutil cp -r ./web-site/ gs://$BUCKET_NAME/
+  
+    - run: gcloud auth configure-docker
     
     - name: Configure Firebase on the app side
       env: 
         AUTH_APIKEY: ${{ secrets.AUTH_APIKEY }}
       run: |
-         envsubst < ./web-site/config_template.js > ./web-site/config.js 
+         envsubst < ./frontend/html/config_template.js > ./frontend/html/config.js 
+
+    - name: Build the Docker image for frontend
+      run: docker build $FRONTEND_IMG -t gcr.io/$PROJECT_ID/$FRONTEND_IMG
+
+    - name: Push image
+      run: docker push gcr.io/$PROJECT_ID/$FRONTEND_IMG
+  
+    - name: Cloud Run Deploy 
+      run: |
+        gcloud run deploy $FRONTEND_IMG \
+          --project $PROJECT_ID \
+          --image gcr.io/$PROJECT_ID/$FRONTEND_IMG \
+          --platform managed \
+          --region us-central1 
+    
+      
+    # - name: Create Bucket 
+    #   run: |
+    #     ./backend/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME 
+
+    # - name: Make bucket Publicly accesible 
+    #   run: |
+    #      gsutil acl ch -u AllUsers:R gs://$BUCKET_NAME/
+
+    # - name: Add files to the bucket 
+    #   run: |
+    #      gsutil cp -r ./frontend/ gs://$BUCKET_NAME/
+        
