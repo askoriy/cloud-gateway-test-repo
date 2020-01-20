@@ -3,8 +3,8 @@ name: Frontend
 on:
   push:
     paths:
-      - '.github/workflows/frontend.yml'
-      - 'frontend/'
+      - '.github/workflows/frontend.yaml'
+      - 'frontend/**'
 
 env: 
   PROJECT_ID: main-104

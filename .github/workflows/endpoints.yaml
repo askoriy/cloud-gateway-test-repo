@@ -3,8 +3,8 @@ name: Cloud Endpoints
 on:
   push:
     paths:
-      - '.github/workflows/endpoints.yml'
-      - 'endpoints'
+      - '.github/workflows/endpoints.yaml'
+      - 'endpoints/**'
 
 env: 
   PROJECT_ID: main-104
