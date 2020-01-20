@@ -44,8 +44,5 @@ jobs:
   
     - name: Cloud Run Deploy Frontend
       run: |
-        gcloud run deploy $FRONTEND_IMG \
-          --project $PROJECT_ID \
-          --image gcr.io/$PROJECT_ID/$FRONTEND_IMG \
-          --allow-unauthenticated
+        gcloud run deploy $FRONTEND_IMG --image gcr.io/$PROJECT_ID/$FRONTEND_IMG --allow-unauthenticated
     

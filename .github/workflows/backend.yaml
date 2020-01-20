@@ -9,6 +9,7 @@ on:
 env: 
   PROJECT_ID: main-105
   SERVICE_NAME: backend
+  REGION: us-central1
 
 jobs:
   build:
@@ -26,15 +27,15 @@ jobs:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
     
-    - run: gcloud auth configure-docker
+    - run: | 
+        gcloud auth configure-docker
+        gcloud config set run/platform managed
+        gcloud config set run/region $REGION
+        gcloud config set project $PROJECT_ID
 
     - name: Push image
       run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
-    - name: Cloud Run Deploy Backend 1
+    - name: Cloud Run Deploy Backend
       run: |
-           gcloud run deploy $SERVICE_NAME \
-             --project $PROJECT_ID \
-             --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
-             --platform managed \
-             --region us-central1 
+           gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME 
