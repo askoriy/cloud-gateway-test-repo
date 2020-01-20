@@ -53,43 +53,43 @@ jobs:
         cat ./web-site/html/config.js
     
 
-  build:
-    needs: firebase
-    runs-on: ubuntu-latest
+  # build:
+  #   needs: firebase
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
+  #   steps:
+  #   - uses: actions/checkout@v1
       
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: ‘274.0.0’
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+  #   - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+  #     with:
+  #       version: ‘274.0.0’
+  #       service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
   
-    - run: | 
-        gcloud auth configure-docker
-        gcloud config set run/platform managed
-        gcloud config set run/region $REGION
-        gcloud config set project $PROJECT_ID 
+  #   - run: | 
+  #       gcloud auth configure-docker
+  #       gcloud config set run/platform managed
+  #       gcloud config set run/region $REGION
+  #       gcloud config set project $PROJECT_ID 
 
-    - name: Build the Docker image web-site
-      run: docker build ./web-site -t gcr.io/$PROJECT_ID/$IMAGE
+  #   - name: Build the Docker image web-site
+  #     run: docker build ./web-site -t gcr.io/$PROJECT_ID/$IMAGE
 
-    - name: Push image
-      run: docker push gcr.io/$PROJECT_ID/$IMAGE
+  #   - name: Push image
+  #     run: docker push gcr.io/$PROJECT_ID/$IMAGE
   
-    - name: Cloud Run Deploy
-      run: |
-        gcloud run deploy $IMAGE --image gcr.io/$PROJECT_ID/$IMAGE --allow-unauthenticated
+  #   - name: Cloud Run Deploy
+  #     run: |
+  #       gcloud run deploy $IMAGE --image gcr.io/$PROJECT_ID/$IMAGE --allow-unauthenticated
 
-    - name: Build the Docker Image example-api
-      run: docker build ./example-api -t gcr.io/$PROJECT_ID/$SERVICE_NAME
+  #   - name: Build the Docker Image example-api
+  #     run: docker build ./example-api -t gcr.io/$PROJECT_ID/$SERVICE_NAME
 
-    - name: Push image
-      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+  #   - name: Push image
+  #     run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
-    - name: Cloud Run Deploy Backend 
-      run: |
-           gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME
+  #   - name: Cloud Run Deploy Backend 
+  #     run: |
+  #          gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME
 
   # deploy:
   #   needs: build
