@@ -54,6 +54,11 @@ jobs:
       run: |
          ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c $CONFIG_ID -p $PROJECT_ID
     
+    - name: Allow unauthenticated 
+      run: |
+        gcloud run services add-iam-policy-binding $API_GATEWAY \
+        --member="allUsers" \
+        --role="roles/run.invoker"
 
     - name: Deploy API GW Service With Custom Image
       run: |
