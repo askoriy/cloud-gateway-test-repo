@@ -27,9 +27,9 @@ securityDefinitions:
     flow: "implicit"
     type: "oauth2"
     # Replace YOUR-PROJECT-ID with your project ID
-    x-google-issuer: "https://securetoken.google.com/main-104"
+    x-google-issuer: "https://securetoken.google.com/$PROJECT_ID"
     #x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
     x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
-    x-google-audiences: "main-104"
+    x-google-audiences: "$PROJECT_ID"
 security:
   - firebase: []
