@@ -31,7 +31,7 @@ jobs:
     - name: Push image
       run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
-    - name: Cloud Run Deploy 
+    - name: Cloud Run Deploy Backend
       run: |
            gcloud run deploy $SERVICE_NAME \
              --project $PROJECT_ID \
