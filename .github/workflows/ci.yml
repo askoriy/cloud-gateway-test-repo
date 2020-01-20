@@ -1,0 +1,62 @@
+name: CI example
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ci.yaml'
+      - 'web-site/**'
+      - 'example-api/**'
+
+env: 
+  PROJECT_ID: main-105
+  REGION: us-central1
+  IMAGE: web-site
+  SERVICE_NAME: example-api
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: ‘274.0.0’
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+  
+    - run: | 
+        gcloud auth configure-docker
+        gcloud config set run/platform managed
+        gcloud config set run/region $REGION
+        gcloud config set project $PROJECT_ID
+    
+    - name: Configure Firebase on the app side
+      env: 
+        AUTH_APIKEY_105: ${{ secrets.AUTH_APIKEY_105 }}
+      run: |
+         envsubst < ./web-site/html/config_template.js > ./web-site/html/config.js 
+
+    - name: Build the Docker image web-site
+      run: docker build ./web-site -t gcr.io/$PROJECT_ID/$IMAGE
+
+    - name: Push image
+      run: docker push gcr.io/$PROJECT_ID/$IMAGE
+  
+    - name: Cloud Run Deploy
+      run: |
+        gcloud run deploy $IMAGE --image gcr.io/$PROJECT_ID/$IMAGE --allow-unauthenticated
+
+    - name: Build the Docker Image example-api
+      run: docker build ./example-api -t gcr.io/$PROJECT_ID/$SERVICE_NAME
+
+    - name: Push image
+      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+    
+    - name: Cloud Run Deploy Backend
+      run: |
+           gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME
+
+    
+    
