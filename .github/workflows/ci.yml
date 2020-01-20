@@ -80,7 +80,7 @@ jobs:
         gcloud config set project $PROJECT_ID
         
     
-    - name: Deploy Initial API GW Service 
+    - name: Deploy Initial API GW Service
       run: |
         gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated
         
