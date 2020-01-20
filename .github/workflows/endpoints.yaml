@@ -10,6 +10,7 @@ env:
   PROJECT_ID: main-105
   SERVICE_NAME: backend
   API_GATEWAY: api-gateway-bf
+  CONFIG_ID: 2020-01-20r0
 
 jobs:
   build:
@@ -48,23 +49,13 @@ jobs:
     - name: Deploy Endpoint Service with config    
       run: |
         gcloud endpoints services deploy ./endpoints/openapi_conf.yaml --project=$PROJECT_ID
-        
-    # - name: Set ENV var CONFIG_ID
-    #   run: |
-    #     echo "::set-env name=CONFIG_ID::$(gcloud endpoints services describe $APIGW_HOST  --format="value(serviceConfig.id)" --project=$PROJECT_ID)"
-    #     ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c 2020-01-17r11 -p $PROJECT_ID
-      
-   # - name: BASH 
-   #  run: |
-   #   echo "::set-env name=CONFIG_ID::$(./endpoints/var.sh $APIGW_HOST $PROJECT_ID)"
-   #    echo $CONFIG_ID
 
     - name: Create Custom API GW Image
       run: |
-         ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c 2020-01-20r0 -p $PROJECT_ID
+         ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c $CONFIG_ID -p $PROJECT_ID
     
 
     - name: Deploy API GW Service With Custom Image
       run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-2020-01-20r0" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
+        gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=us-central1
     
