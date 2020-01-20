@@ -38,6 +38,8 @@ jobs:
          gsutil cp -r ./web-site/ gs://$BUCKET_NAME/
     
     - name: Configure Firebase on the app side
+      env: 
+        AUTH_APIKEY: ${{ secrets.AUTH_APIKEY }}
+        #  echo "::set-env name=AUTH_APIKEY::${{ secrets.AUTH_APIKEY }}
       run: |
-         echo "::set-env name=AUTH_APIKEY::${{ secrets.AUTH_APIKEY }}
          envsubst < ./web-site/config_template.js > ./web-site/config.js 
