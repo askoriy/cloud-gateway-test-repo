@@ -33,7 +33,7 @@ jobs:
          envsubst < ./frontend/html/config_template.js > ./frontend/html/config.js 
 
     - name: Build the Docker image for frontend
-      run: docker build $FRONTEND_IMG -t gcr.io/$PROJECT_ID/$FRONTEND_IMG
+      run: docker build ./frontend -t gcr.io/$PROJECT_ID/$FRONTEND_IMG
 
     - name: Push image
       run: docker push gcr.io/$PROJECT_ID/$FRONTEND_IMG
