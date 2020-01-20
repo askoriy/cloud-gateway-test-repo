@@ -35,7 +35,7 @@ jobs:
         echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=us-central1 --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )"
         echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=us-central1 --platform=managed --project=$PROJECT_ID)"
    
-    - name: Echo ENV vars
+    - name: Echo ENV vars 
       run: |
         echo $SERVICE_URL
         echo $APIGW_HOST

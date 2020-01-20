@@ -32,13 +32,13 @@ jobs:
       run: |
          envsubst < ./frontend/html/config_template.js > ./frontend/html/config.js 
 
-    - name: Build the Docker image for frontend
+    - name: Build the Docker image frontend
       run: docker build ./frontend -t gcr.io/$PROJECT_ID/$FRONTEND_IMG
 
     - name: Push image
       run: docker push gcr.io/$PROJECT_ID/$FRONTEND_IMG
   
-    - name: Cloud Run Deploy 
+    - name: Cloud Run Deploy Frontend
       run: |
         gcloud run deploy $FRONTEND_IMG \
           --project $PROJECT_ID \
