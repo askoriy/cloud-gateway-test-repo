@@ -27,7 +27,7 @@ jobs:
       
     - name: Create Bucket 
       run: |
-        ./simpleserver/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME
+        ./simpleserver/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME 
 
     - name: Make bucket Publicly accesible 
       run: |
