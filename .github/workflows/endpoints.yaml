@@ -10,7 +10,7 @@ env:
   PROJECT_ID: main-105
   SERVICE_NAME: backend
   API_GATEWAY: api-gateway-bf
-  CONFIG_ID: 2020-01-20r0
+  CONFIG_ID: 2020-01-20r8
   REGION: us-central1
 
 jobs:
