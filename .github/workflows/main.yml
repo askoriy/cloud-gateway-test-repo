@@ -9,7 +9,7 @@ env:
   PROJECT_ID: main-104
   BUCKET_NAME: ci-bucket-qipeit
   REGION: us-central1
-  FRONTEND_IMG: front-image
+  FRONTEND_IMG: frontend
 
 jobs:
   build:
@@ -43,6 +43,7 @@ jobs:
         gcloud run deploy $FRONTEND_IMG \
           --project $PROJECT_ID \
           --image gcr.io/$PROJECT_ID/$FRONTEND_IMG \
+          --allow-unauthenticated \
           --platform managed \
           --region us-central1 
     
