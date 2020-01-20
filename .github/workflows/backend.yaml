@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/backend.yml'
-      - 'backend/'
+      - 'backend/*'
 
 env: 
   PROJECT_ID: main-104
@@ -31,7 +31,7 @@ jobs:
     - name: Push image
       run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
     
-    - name: Cloud Run Deploy Backend
+    - name: Cloud Run Deploy Backend 1
       run: |
            gcloud run deploy $SERVICE_NAME \
              --project $PROJECT_ID \
