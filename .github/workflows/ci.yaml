@@ -17,6 +17,39 @@ env:
   CONFIG_ID: 2020-01-20r11
 
 jobs:
+  firebase:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: ‘274.0.0’
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+
+    - run: | 
+        gcloud config set run/region $REGION
+        gcloud config set project $PROJECT_ID
+
+    - name: npm install
+      run: | 
+        npm install
+        npm run build 
+    
+    - name: Firebase Config
+      env: 
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      run: | 
+         sudo npm install -g firebase-tools
+         echo "::set-env name=AUTH_APIKEY_105::$(firebase --token "$FIREBASE_TOKEN" setup:web --project main-104 | grep -oP '(?<="apiKey": ").*(?=")'"
+
+    - name: Configure Firebase on the app side
+      run: |
+        envsubst < ./web-site/html/config_template.js > ./web-site/html/config.js
+    
+
   build:
 
     runs-on: ubuntu-latest
@@ -33,13 +66,7 @@ jobs:
         gcloud auth configure-docker
         gcloud config set run/platform managed
         gcloud config set run/region $REGION
-        gcloud config set project $PROJECT_ID
-    
-    - name: Configure Firebase on the app side
-      env: 
-        AUTH_APIKEY_105: ${{ secrets.AUTH_APIKEY_105 }}
-      run: |
-         envsubst < ./web-site/html/config_template.js > ./web-site/html/config.js 
+        gcloud config set project $PROJECT_ID 
 
     - name: Build the Docker image web-site
       run: docker build ./web-site -t gcr.io/$PROJECT_ID/$IMAGE
@@ -61,55 +88,55 @@ jobs:
       run: |
            gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
+  #   steps:
+  #   - uses: actions/checkout@v1
     
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: ‘274.0.0’
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+  #   - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+  #     with:
+  #       version: ‘274.0.0’
+  #       service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
     
-    - run: | 
-        gcloud auth configure-docker
-        gcloud config set run/platform managed
-        gcloud config set run/region $REGION
-        gcloud config set project $PROJECT_ID
+  #   - run: | 
+  #       gcloud auth configure-docker
+  #       gcloud config set run/platform managed
+  #       gcloud config set run/region $REGION
+  #       gcloud config set project $PROJECT_ID
         
     
-    - name: Deploy Initial API GW Service
-      run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated
+  #   - name: Deploy Initial API GW Service
+  #     run: |
+  #       gcloud run deploy $API_GATEWAY --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" --allow-unauthenticated
         
-    - name: Set ENV vars
-      run: | 
-        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" | sed -e 's#^https://##; s#/score/$##' )"
-        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)")"
+  #   - name: Set ENV vars
+  #     run: | 
+  #       echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" | sed -e 's#^https://##; s#/score/$##' )"
+  #       echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)")"
    
-    - name: Echo ENV vars 
-      run: |
-        echo $SERVICE_URL
-        echo $APIGW_HOST
+  #   - name: Echo ENV vars 
+  #     run: |
+  #       echo $SERVICE_URL
+  #       echo $APIGW_HOST
         
-    - name: Create OpenApi document
-      run: |
-        envsubst < ./endpoints/openapi-run_template.yaml > ./endpoints/openapi_conf.yaml
-        cat ./endpoints/openapi_conf.yaml
+  #   - name: Create OpenApi document
+  #     run: |
+  #       envsubst < ./endpoints/openapi-run_template.yaml > ./endpoints/openapi_conf.yaml
+  #       cat ./endpoints/openapi_conf.yaml
         
-    - name: Deploy Endpoint Service with config    
-      run: |
-        gcloud endpoints services deploy ./endpoints/openapi_conf.yaml --project=$PROJECT_ID
+  #   - name: Deploy Endpoint Service with config    
+  #     run: |
+  #       gcloud endpoints services deploy ./endpoints/openapi_conf.yaml --project=$PROJECT_ID
 
-    - name: Create Custom API GW Image
-      run: |
-         ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c $CONFIG_ID -p $PROJECT_ID
+  #   - name: Create Custom API GW Image
+  #     run: |
+  #        ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c $CONFIG_ID -p $PROJECT_ID
 
-    - name: Deploy API GW Service With Custom Image
-      run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated  
+  #   - name: Deploy API GW Service With Custom Image
+  #     run: |
+  #       gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated  
 
     
     
