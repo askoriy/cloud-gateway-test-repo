@@ -35,8 +35,8 @@ jobs:
 
     - name: npm install
       run: | 
-        sudo npm install
-        sudo npm run build 
+        npm install
+        npm run build 
     
     - name: Firebase Config
       env: 
@@ -51,7 +51,7 @@ jobs:
     
 
   build:
-
+    needs: firebase
     runs-on: ubuntu-latest
 
     steps:
