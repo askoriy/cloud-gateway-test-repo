@@ -36,3 +36,8 @@ jobs:
     - name: Add files to the bucket 
       run: |
          gsutil cp -r ./web-site/ gs://$BUCKET_NAME/
+    
+    - name: Configure Firebase on the app side
+      run: |
+         echo "::set-env name=AUTH_APIKEY::${{ secrets.AUTH_APIKEY }}
+         envsubst < ./web-site/config_template.js > ./web-site/config.js
