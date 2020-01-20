@@ -16,7 +16,7 @@ var config = {
   apiKey: "$AUTH_APIKEY_105",
   authDomain: "$PROJECT_ID.firebaseapp.com",
   databaseURL: "https://$PROJECT_ID.firebaseio.com",
-  storageBucket: "PROJECT_ID.appspot.com",
+  storageBucket: "$PROJECT_ID.appspot.com",
 };
 firebase.initializeApp(config);
 

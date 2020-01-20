@@ -32,7 +32,7 @@ jobs:
     
     - name: Configure Firebase on the app side
       env: 
-        AUTH_APIKEY: ${{ secrets.AUTH_APIKEY_105 }}
+        AUTH_APIKEY_105: ${{ secrets.AUTH_APIKEY_105 }}
       run: |
          envsubst < ./frontend/html/config_template.js > ./frontend/html/config.js 
 
