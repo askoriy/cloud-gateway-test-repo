@@ -1,13 +1,13 @@
-name: Bucket
+name: Frontend
 
 on:
   push:
-    branches:
-      - 'bucket-ci'
+    paths:
+      - '.github/workflows/frontend.yml'
+      - 'frontend/'
 
 env: 
   PROJECT_ID: main-104
-  BUCKET_NAME: ci-bucket-qipeit
   REGION: us-central1
   FRONTEND_IMG: frontend
 
@@ -47,16 +47,3 @@ jobs:
           --platform managed \
           --region us-central1 
     
-      
-    # - name: Create Bucket 
-    #   run: |
-    #     ./backend/bucket_check.sh $PROJECT_ID $REGION $BUCKET_NAME 
-
-    # - name: Make bucket Publicly accesible 
-    #   run: |
-    #      gsutil acl ch -u AllUsers:R gs://$BUCKET_NAME/
-
-    # - name: Add files to the bucket 
-    #   run: |
-    #      gsutil cp -r ./frontend/ gs://$BUCKET_NAME/
-        
