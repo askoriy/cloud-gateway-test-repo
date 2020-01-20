@@ -15,6 +15,7 @@ env:
   SERVICE_NAME: example-api
   API_GATEWAY: api-gateway-bf
   CONFIG_ID: 2020-01-20r11
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 jobs:
   firebase:
@@ -34,8 +35,6 @@ jobs:
         gcloud config set project $PROJECT_ID
     
     - name: Firebase Config 
-      env: 
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       run: | 
          sudo npm install -g firebase-tools
          echo "::set-env name=AUTH_APIKEY_105::$(firebase --token "$FIREBASE_TOKEN" setup:web --project main-104 | grep -oP '(?<=\"apiKey\": \").*(?=\")' )"
