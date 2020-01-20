@@ -42,7 +42,8 @@ jobs:
         
     - name: Create OpenApi document
       run: |
-        envsubst < endpoints/openapi-run_template.yaml > endpoints/openapi_conf.yaml
+        envsubst < ./endpoints/openapi-run_template.yaml > ./endpoints/openapi_conf.yaml
+        sleep 5
         cat ./endpoints/openapi_conf.yaml
         
     - name: Deploy Endpoint Service with config    
