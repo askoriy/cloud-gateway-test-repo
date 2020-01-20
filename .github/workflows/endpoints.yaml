@@ -8,7 +8,7 @@ on:
 
 env: 
   PROJECT_ID: main-105
-  SERVICE_NAME: backend
+  SERVICE_NAME: example-api
   API_GATEWAY: api-gateway-bf
   CONFIG_ID: 2020-01-20r8
   REGION: us-central1
@@ -39,8 +39,8 @@ jobs:
         
     - name: Set ENV vars
       run: | 
-        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=$REGION --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )"
-        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=$REGION --platform=managed --project=$PROJECT_ID)"
+        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" | sed -e 's#^https://##; s#/score/$##' )"
+        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)")"
    
     - name: Echo ENV vars 
       run: |
