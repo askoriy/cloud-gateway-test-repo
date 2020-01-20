@@ -22,7 +22,7 @@
 function getUiConfig() {
   return {
     'callbacks': {
-      // Called when the user has been successfully signed in.
+      // Called when the user  has been successfully signed in.
       'signInSuccessWithAuthResult': function(authResult, redirectUrl) {
         if (authResult.user) {
           console.log(authResult.user);

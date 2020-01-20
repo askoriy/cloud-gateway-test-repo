@@ -1,0 +1,40 @@
+name: Backend
+
+on:
+  push:
+    paths:
+      - '.github/workflows/backend.yaml'
+      - 'backend/**'
+
+env: 
+  PROJECT_ID: main-105
+  SERVICE_NAME: backend
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: Build the Docker Image 
+      run: docker build ./backend -t gcr.io/$PROJECT_ID/$SERVICE_NAME
+    
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: ‘274.0.0’
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+    
+    - run: gcloud auth configure-docker
+
+    - name: Push image
+      run: docker push gcr.io/$PROJECT_ID/$SERVICE_NAME
+    
+    - name: Cloud Run Deploy Backend 1
+      run: |
+           gcloud run deploy $SERVICE_NAME \
+             --project $PROJECT_ID \
+             --image gcr.io/$PROJECT_ID/$SERVICE_NAME \
+             --platform managed \
+             --region us-central1 
