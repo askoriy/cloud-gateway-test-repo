@@ -33,7 +33,7 @@ jobs:
         gcloud config set run/region $REGION
         gcloud config set project $PROJECT_ID
     
-    - name: Firebase Config
+    - name: Firebase Config 
       env: 
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       run: | 
