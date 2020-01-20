@@ -1,8 +1,8 @@
 name: Backend
 
 on:
-    push:
-      paths:
+  push:
+    paths:
         - '.github/workflows/backend.yml'
         - 'backend/'
 
