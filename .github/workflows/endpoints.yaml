@@ -11,7 +11,7 @@ env:
   SERVICE_NAME: backend
   API_GATEWAY: api-gateway-bf
   CONFIG_ID: 2020-01-20r0
-  GCP_REGION: us-central1
+  REGION: us-central1
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
     - run: | 
         gcloud auth configure-docker
         gcloud config set run/platform managed
-        gcloud config set run/region $GCP_REGION
+        gcloud config set run/region $REGION
         gcloud config set project $PROJECT_ID
         
     
@@ -39,8 +39,8 @@ jobs:
         
     - name: Set ENV vars
       run: | 
-        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=$GCP_REGION --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )"
-        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=$GCP_REGION --platform=managed --project=$PROJECT_ID)"
+        echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" --region=$REGION --project=$PROJECT_ID --platform=managed | sed -e 's#^https://##; s#/score/$##' )"
+        echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)" --region=$REGION --platform=managed --project=$PROJECT_ID)"
    
     - name: Echo ENV vars 
       run: |
@@ -68,5 +68,5 @@ jobs:
 
     - name: Deploy API GW Service With Custom Image
       run: |
-        gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=$GCP_REGION
+        gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated --platform managed --project=$PROJECT_ID --region=$REGION
     

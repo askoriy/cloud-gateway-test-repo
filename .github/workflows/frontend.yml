@@ -24,7 +24,11 @@ jobs:
         version: ‘274.0.0’
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
   
-    - run: gcloud auth configure-docker
+    - run: | 
+        gcloud auth configure-docker
+        gcloud config set run/platform managed
+        gcloud config set run/region $REGION
+        gcloud config set project $PROJECT_ID
     
     - name: Configure Firebase on the app side
       env: 
@@ -43,7 +47,5 @@ jobs:
         gcloud run deploy $FRONTEND_IMG \
           --project $PROJECT_ID \
           --image gcr.io/$PROJECT_ID/$FRONTEND_IMG \
-          --allow-unauthenticated \
-          --platform managed \
-          --region us-central1 
+          --allow-unauthenticated
     
