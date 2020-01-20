@@ -6,6 +6,7 @@ on:
       - '.github/workflows/ci.yaml'
       - 'web-site/**'
       - 'example-api/**'
+      - 'endpoints/**'
 
 env: 
   PROJECT_ID: main-105
