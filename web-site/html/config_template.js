@@ -13,7 +13,7 @@
  */
 
 var config = {
-  apiKey: "$AUTH_APIKEY_105_1",
+  apiKey: "$auth_api_key",
   authDomain: "$PROJECT_ID.firebaseapp.com",
   databaseURL: "https://$PROJECT_ID.firebaseio.com",
   storageBucket: "$PROJECT_ID.appspot.com",
