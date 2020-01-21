@@ -34,7 +34,7 @@ jobs:
         gcloud config set run/region $REGION
         gcloud config set project $PROJECT_ID
     
-    - name: Firebase Config
+    - name: Firebase Config 
       run: | 
          sudo npm install -g firebase-tools
          sudo firebase --version
