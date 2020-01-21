@@ -141,7 +141,7 @@ jobs:
       run: |
          ./endpoints/gcloud-build-image.sh -s $APIGW_HOST -c $CONFIG_ID -p $PROJECT_ID
 
-    - name: Deploy API GW Service With Custom Image
+    - name: Deploy API GW Service With Custom Image 
       run: |
         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated  
 
