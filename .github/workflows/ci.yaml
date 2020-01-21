@@ -18,7 +18,7 @@ env:
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 jobs:
-  firebase:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -38,9 +38,7 @@ jobs:
       run: | 
          sudo npm install -g firebase-tools
          sudo chown -R $USER:$(id -gn $USER) /home/runner/.config
-         firebase --version
          echo "::set-env name=AUTH_APIKEY_105_1::$(firebase --token "$FIREBASE_TOKEN" setup:web --project $PROJECT_ID | grep apiKey | awk '{print $2}' | tr -d '",')"
-         echo $AUTH_APIKEY_105_1
     
     - name: Echo ENV vars 
       run: |
@@ -50,25 +48,6 @@ jobs:
       run: |
         envsubst < ./web-site/html/config_template.js > ./web-site/html/config.js
         cat ./web-site/html/config.js
-    
-
-  build:
-    needs: firebase
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-      
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: ‘274.0.0’
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
-  
-    - run: | 
-        gcloud auth configure-docker
-        gcloud config set run/platform managed
-        gcloud config set run/region $REGION
-        gcloud config set project $PROJECT_ID 
 
     - name: Build the Docker image web-site
       run: docker build ./web-site -t gcr.io/$PROJECT_ID/$IMAGE
