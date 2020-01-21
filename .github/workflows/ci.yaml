@@ -37,8 +37,8 @@ jobs:
     - name: Firebase Config
       run: | 
          sudo npm install -g firebase-tools
-         firebase --version
-         echo "::set-env name=AUTH_APIKEY_105_1::$(firebase --token "$FIREBASE_TOKEN" setup:web | grep apiKey | awk '{print $2}' | tr -d '",')"
+         sudo firebase --version
+         echo "::set-env name=AUTH_APIKEY_105_1::$(sudo firebase --token "$FIREBASE_TOKEN" setup:web | grep apiKey | awk '{print $2}' | tr -d '",')"
          echo $AUTH_APIKEY_105_1
     
     - name: Echo ENV vars 
