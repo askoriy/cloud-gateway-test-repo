@@ -41,9 +41,9 @@ jobs:
          sudo chown -R $USER:$(id -gn $USER) /home/runner/.config
          echo "::set-env name=AUTH_APIKEY_105_1::$(firebase --token "$FIREBASE_TOKEN" setup:web --project $PROJECT_ID | grep apiKey | awk '{print $2}' | tr -d '",')"
     
-    - name: Echo ENV vars 
-      run: |
-        echo $AUTH_APIKEY_105_1
+    # - name: Echo ENV vars 
+    #   run: |
+    #     echo $AUTH_APIKEY_105_1
 
     - name: Configure Firebase on the app side
       run: |
@@ -79,10 +79,10 @@ jobs:
         echo "::set-env name=APIGW_HOST::$(gcloud run services describe $API_GATEWAY --format="value(status.url)" | sed -e 's#^https://##; s#/score/$##' )"
         echo "::set-env name=SERVICE_URL::$(gcloud run services describe $SERVICE_NAME --format="value(status.url)")"
    
-    - name: Echo ENV vars 
-      run: |
-        echo $SERVICE_URL
-        echo $APIGW_HOST
+    # - name: Echo ENV vars 
+    #   run: |
+    #     echo $SERVICE_URL
+    #     echo $APIGW_HOST
         
     - name: Create OpenApi document
       run: |
@@ -94,9 +94,9 @@ jobs:
         gcloud endpoints services deploy ./endpoints/openapi_conf.yaml --project=$PROJECT_ID
         echo "::set-env name=CONFIG_ID::$(gcloud endpoints configs list --service=$APIGW_HOST --format="value(id)" --limit=1)"
 
-    - name: Use Env 
-      run: |
-        echo $CONFIG_ID
+    # - name: Use Env 
+    #   run: |
+    #     echo $CONFIG_ID
 
     - name: Create Custom API GW Image
       run: |
@@ -105,6 +105,3 @@ jobs:
     - name: Deploy API GW Service With Custom Image 
       run: |
         gcloud run deploy $API_GATEWAY --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$APIGW_HOST-$CONFIG_ID" --allow-unauthenticated  
-
-    
-    
