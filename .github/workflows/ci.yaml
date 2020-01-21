@@ -34,15 +34,15 @@ jobs:
         gcloud config set run/region $REGION
         gcloud config set project $PROJECT_ID
     
-    - name: Firebase Config
+    - name: Firebase Config 
       run: | 
          sudo npm install -g firebase-tools
-         echo "::set-env name=AUTH_APIKEY_105_1::$(firebase --token "$FIREBASE_TOKEN" setup:web | grep apiKey | awk '{print $2}' | tr -d '",')"
-         echo $AUTH_APIKEY_105_1
+         echo "::set-env name=auth_api_key::$(firebase --token "$FIREBASE_TOKEN" setup:web | grep apiKey | awk '{print $2}' | tr -d '",')"
+         echo $auth_api_key
     
     - name: Echo ENV vars 
       run: |
-        echo $AUTH_APIKEY_105_1
+        echo $auth_api_key
 
     - name: Configure Firebase on the app side
       run: |
