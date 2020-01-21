@@ -131,11 +131,11 @@ jobs:
     - name: Deploy Endpoint Service with config    
       run: |
         gcloud endpoints services deploy ./endpoints/openapi_conf.yaml --project=$PROJECT_ID
-        echo "::set-env name=CONIFG_ID::$(gcloud endpoints configs list --service=$APIGW_HOST --format="value(id)" --limit=1)"
+        echo "::set-env name=CONFIG_ID::$(gcloud endpoints configs list --service=$APIGW_HOST --format="value(id)" --limit=1)"
 
     - name: Use Env 
       run: |
-        echo $CONIFG_ID
+        echo $CONFIG_ID
 
     - name: Create Custom API GW Image
       run: |
