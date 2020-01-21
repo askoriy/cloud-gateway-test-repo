@@ -35,10 +35,10 @@ jobs:
         gcloud config set project $PROJECT_ID
     
     - name: Firebase Config
-      run: | 
-         sudo npm install -g firebase-tools
       with: 
         AUTH_APIKEY_105_1: $(firebase --token "$FIREBASE_TOKEN" setup:web | grep apiKey | awk '{print $2}' | tr -d '",')"
+      run: | 
+         sudo npm install -g firebase-tools
     
     - name: Echo ENV vars 
       run: |
