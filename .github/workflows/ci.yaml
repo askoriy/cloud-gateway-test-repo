@@ -14,7 +14,6 @@ env:
   IMAGE: web-site
   SERVICE_NAME: example-api
   API_GATEWAY: api-gateway-bf
-  # CONFIG_ID: 2020-01-20r11
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 jobs:
@@ -31,8 +30,10 @@ jobs:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
 
     - run: | 
+        gcloud auth configure-docker
         gcloud config set run/region $REGION
         gcloud config set project $PROJECT_ID
+        gcloud config set run/platform managed
     
     - name: Firebase Config 
       run: | 
@@ -68,25 +69,6 @@ jobs:
     - name: Cloud Run Deploy Backend 
       run: |
            gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: ‘274.0.0’
-        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
-    
-    - run: | 
-        gcloud auth configure-docker
-        gcloud config set run/platform managed
-        gcloud config set run/region $REGION
-        gcloud config set project $PROJECT_ID
-        
     
     - name: Deploy Initial API GW Service
       run: |
