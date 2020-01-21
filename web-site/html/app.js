@@ -266,7 +266,7 @@ var initApp = function() {
       'click', function() {
 
    $.ajax({
-      url: "https://endpoints-gateway-estiec4hma-uc.a.run.app/hello",
+      url: "https://api-gateway-bf-oquitmyudq-uc.a.run.app/hello",
       headers: { 'Authorization': 'Bearer '+id_token },
       success: function(data, status){
         console.log(data);
