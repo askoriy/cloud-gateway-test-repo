@@ -11,6 +11,9 @@ produces:
 x-google-backend:
   #address: https://hello-estiec4hma-uc.a.run.app
   address: $SERVICE_URL
+x-google-endpoints:
+- name: $APIGW_HOST
+  allowCors: True
 paths:
   /hello:
     get:
