@@ -13,6 +13,7 @@ env:
   SERVICE_NAME: multi-tenant-frontend
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
   GCP_REGISTRY: eu.gcr.io
+  GOOGLE_APPLICATION_CREDENTIALS: key.json
 
 jobs:
 
