@@ -21,6 +21,14 @@ jobs:
       - run: |
           ls -la 
           pwd
+      
+      - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
+        run: echo ${{ secrets.SERVICE_ACCOUNT_105 }} | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
+
+      - name: Create OpenApi document
+        run: |
+            envsubst < ./key_templ.json > ./key.json
+            cat ./key.json
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
