@@ -1,6 +1,10 @@
 name: 'Terraform GitHub Actions'
 on:
   - push
+
+env: 
+  GOOGLE_APPLICATION_CREDENTIALS: key.json
+  
 jobs:
   terraform:
     name: 'Terraform'
@@ -8,6 +12,15 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '275.0.0'
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+  
+      - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
+        run: echo -n ${{ secrets.SERVICE_ACCOUNT_105 }} | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
+
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
         with:
