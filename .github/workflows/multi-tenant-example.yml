@@ -52,8 +52,8 @@ jobs:
 
     - name: Configure Firebase on the app side
       run: |
-      envsubst < ./frontend-multi-tenant/html/config_template.js > ./frontend-multi-tenant/html/config.js
-      cat ./frontend-multi-tenant/html/config.js
+        envsubst < ./frontend-multi-tenant/html/config_template.js > ./frontend-multi-tenant/html/config.js
+        cat ./frontend-multi-tenant/html/config.js
 
     - name: Build the Docker image
       run: docker build ./frontend-multi-tenant --tag $GCP_REGISTRY/$GCP_PROJECT/$SERVINE_NAME
