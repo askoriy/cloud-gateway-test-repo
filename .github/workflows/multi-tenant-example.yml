@@ -17,9 +17,6 @@ jobs:
         with:
           version: '275.0.0'
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
-  
-      - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
-        run: cat ${{ secrets.SERVICE_ACCOUNT_105 }} | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
@@ -28,6 +25,10 @@ jobs:
           tf_actions_subcommand: 'init'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -la 
+          pwd
+
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -42,4 +43,3 @@ jobs:
           tf_actions_subcommand: 'plan'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS: key.json
