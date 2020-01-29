@@ -18,6 +18,10 @@ jobs:
           version: '275.0.0'
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
 
+      -run: |
+          ls -la 
+          pwd
+
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
         with:
@@ -25,9 +29,6 @@ jobs:
           tf_actions_subcommand: 'init'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ls -la 
-          pwd
 
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
