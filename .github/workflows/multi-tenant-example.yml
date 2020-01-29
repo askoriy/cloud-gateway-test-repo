@@ -1,0 +1,87 @@
+name: Multi-Tenant Frontend
+
+on:
+  push:
+    paths:
+      - 'frontend-multi-tenant/**'
+      - '.github/workflows/multi-tenant-example.yml'
+
+# Environment variables available to all jobs and steps in this workflow
+env: 
+  GCP_PROJECT: main-105
+  GCP_REGION: us-central1
+  SERVICE_NAME: multi-tenant-frontend
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  GCP_REGISTRY: eu.gcr.io
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '275.0.0'
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+
+    - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
+      run: echo -n ${{ secrets.SERVICE_ACCOUNT_105 }} | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
+
+    - name: ls 
+      run: |
+        ls -l
+        pwd
+
+    # Configure docker to use the gcloud command-line tool as a credential helper
+    - run: |
+        gcloud auth configure-docker
+        gcloud config set run/platform managed
+        gcloud config set run/region $GCP_REGION
+        gcloud config set project $GCP_PROJECT
+    
+    - name: Firebase installation 
+      run: | 
+        sudo npm install -g firebase-tools
+        sudo chown -R $USER:$(id -gn $USER) /home/runner/.config
+        echo "::set-env name=AUTH_APIKEY::$(firebase --token "$FIREBASE_TOKEN" setup:web --project $GCP_PROJECT | grep apiKey | awk '{print $2}' | tr -d '",')"
+
+    - name: Configure Firebase on the app side
+      run: |
+      envsubst < ./frontend-multi-tenant/html/config_template.js > ./frontend-multi-tenant/html/config.js
+      cat ./frontend-multi-tenant/html/config.js
+
+    - name: Build the Docker image
+      run: docker build ./frontend-multi-tenant --tag $GCP_REGISTRY/$GCP_PROJECT/$SERVINE_NAME
+    
+    # Push the Docker image to Google Container Registry
+    - name: Publish
+      run: |
+        docker push $GCP_REGISTRY/$GCP_PROJECT/$SERVINE_NAME
+
+    # Deploy the Docker image to Cloud Run
+    - name: Deploy
+      run: |
+        gcloud run deploy $SERVINE_NAME --image=$GCP_REGISTRY/$GCP_PROJECT/$SERVINE_NAME --allow-unauthenticated
+    
+    - name: Terraform Init
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: './frontend-multi-tenant/terraform'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Terraform Plan
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'plan'
+        tf_actions_working_dir: './frontend-multi-tenant/terraform'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
