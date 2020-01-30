@@ -26,13 +26,6 @@ jobs:
         run: |
           GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
           echo $GOOGLE_APPLICATION_CREDENTIALS > ./key.json
-          cat ./key.json
-        # env: 
-        #   GOOGLE_APPLICATION_CREDENTIALS: $(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d) > ./key.json
-
-      - name: Debug
-        run: | 
-          cat ./key.json
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
