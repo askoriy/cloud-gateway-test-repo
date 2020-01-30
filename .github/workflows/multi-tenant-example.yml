@@ -32,7 +32,7 @@ jobs:
         with:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'init'
-          tf_actions_working_dir: './cloud-run/api-gw/frontend-multi-tenant/terraform'
+          tf_actions_working_dir: './frontend-multi-tenant/terraform'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,7 +41,7 @@ jobs:
         with:
           tf_actions_version: 0.12.13
           tf_actions_subcommand: 'validate'
-          tf_actions_working_dir: './frontend-multi-tenant/terraform'
+          tf_actions_working_dir: './frontend-multi-tenant/terraform/'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: ./frontend-multi-tenant/terraform/key.json
