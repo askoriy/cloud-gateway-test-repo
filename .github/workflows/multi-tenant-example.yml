@@ -45,7 +45,7 @@ jobs:
           tf_actions_working_dir: './frontend-multi-tenant/terraform/'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS: ./frontend-multi-tenant/terraform/key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       - name: 'Terraform Plan'
         uses: hashicorp/terraform-github-actions@master
@@ -55,4 +55,4 @@ jobs:
           tf_actions_working_dir: './frontend-multi-tenant/terraform/'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS: ./frontend-multi-tenant/terraform/key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ./key.json
