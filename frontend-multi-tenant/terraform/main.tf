@@ -22,6 +22,6 @@ resource "google_identity_platform_tenant" "tenant_tf" {
   project      = local.project     
 }
 
-output "tenant_name" {
+output "tf_actions_output" {
   value = google_identity_platform_tenant.tenant_tf.name
 }
