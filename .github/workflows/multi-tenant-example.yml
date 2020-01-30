@@ -78,7 +78,7 @@ jobs:
 
       - name: 'Use Terraform Output'
         run: | 
-          echo "::set-env name=TENANT_NAME_1::$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name.value[0]')
+          echo "::set-env name=TENANT_NAME_1::$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name.value[0]')"
           echo $TENANT_NAME_1
           TENANT_NAME_2=$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name.value[1]')
           echo $TENANT_NAME_2
