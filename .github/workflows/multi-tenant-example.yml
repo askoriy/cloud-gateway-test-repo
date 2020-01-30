@@ -70,12 +70,12 @@ jobs:
         id: terraform
         with:
           tf_actions_version: 0.12.13
-          tf_actions_subcommand: 'output tenant_name'
+          tf_actions_subcommand: 'output'
           tf_actions_working_dir: './frontend-multi-tenant/terraform/'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       - name: 'Use Terraform Output'
-        run: echo "${{ steps.terraform.outputs.tf_actions_output }}"
+        run: echo "${{ steps.terraform.outputs.tf_actions_output.tenant_name }}"
       
