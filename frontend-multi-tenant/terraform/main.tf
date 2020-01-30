@@ -19,6 +19,7 @@ provider "google-beta" {
 resource "google_identity_platform_tenant" "tenant_tf" {
   provider     = google-beta
   for_each     = var.tenant_names
+  display_name = each.value
   project      = local.project     
 }
 
