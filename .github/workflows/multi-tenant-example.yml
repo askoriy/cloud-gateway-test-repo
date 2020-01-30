@@ -79,6 +79,6 @@ jobs:
       - name: 'Use Terraform Output'
         run: | 
           sudo apt-get install jq
-          TENANT_NAME= $(echo "${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.tenant_name.value'")
+          TENANT_NAME= $(echo ${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.tenant_name.value')
           echo $TENANT_NAME
       
