@@ -2,8 +2,8 @@ name: 'Terraform GitHub Actions'
 on:
   - push
 
-env: 
-  GOOGLE_APPLICATION_CREDENTIALS: key.json
+# env: 
+#   GOOGLE_APPLICATION_CREDENTIALS: key.json
 
 jobs:
   terraform:
@@ -16,18 +16,20 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '275.0.0'
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
+          service_account_key: ${{ secrets.CI_CD_PIPELINE }}
 
       - run: |
           ls -la 
           pwd
       
       - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
-        run: GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.SERVICE_ACCOUNT_105}} | base64 -d)
+        run: ::set-env name=GOOGLE_APPLICATION_CREDENTIALS::$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
         
       - name: Create OpenApi document
         run: |
             echo $GOOGLE_APPLICATION_CREDENTIALS
+            envsubst < ./key_templ.json > ./key.json
+            cat ./key.json
 
       # - name: Debug
       #   run: | 
