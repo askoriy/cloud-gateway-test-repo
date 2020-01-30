@@ -1,3 +1,10 @@
+terraform {
+  backend "gcs" {
+    bucket   = "terraform-cloud-run"
+    prefix   = "state"
+  }
+}
+
 locals {
   project = "main-105"
   region  = "us-central1"

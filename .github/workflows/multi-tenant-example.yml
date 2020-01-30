@@ -2,8 +2,6 @@ name: 'Terraform GitHub Actions'
 on:
   - push
 
-# env: 
-#   GOOGLE_APPLICATION_CREDENTIALS: key.json
 
 jobs:
   terraform:
