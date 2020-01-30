@@ -25,14 +25,14 @@ jobs:
       - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
         run: |
           GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
-          echo $GOOGLE_APPLICATION_CREDENTIALS
+          echo $GOOGLE_APPLICATION_CREDENTIALS > ./key.json
+          cat ./key.json
         env: 
           GOOGLE_APPLICATION_CREDENTIALS: $(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
 
-      # - name: Debug
-      #   run: | 
-      #     cat ./key.json
-      #     echo $GOOGLE_APPLICATION_CREDENTIALS
+      - name: Debug
+        run: | 
+          cat ./key.json
 
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
@@ -50,6 +50,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: $(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
+
       - name: 'Terraform Plan'
         uses: hashicorp/terraform-github-actions@master
         with:
