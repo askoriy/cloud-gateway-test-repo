@@ -75,8 +75,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: ./key.json
-      - name: js version
-        run: jq --version
 
       - name: 'Use Terraform Output'
         run: | 
