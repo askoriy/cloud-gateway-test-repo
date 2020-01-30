@@ -77,5 +77,8 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       - name: 'Use Terraform Output'
-        run: echo "${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.tenant_name.value'"
+        run: | 
+          apt-get install jq
+          TENANT_NAME= $(echo "${{ steps.terraform.outputs.tf_actions_output }} | jq -r '.tenant_name.value'")
+          echo $TENANT_NAME
       
