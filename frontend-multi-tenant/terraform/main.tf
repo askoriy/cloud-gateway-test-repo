@@ -16,8 +16,8 @@ provider "google-beta" {
   region      = local.region 
 }
 
-resource "google_identity_platform_tenant" "tenant1" {
+resource "google_identity_platform_tenant" "tenant_tf" {
   provider     = google-beta
-  display_name = "Tenant-1"
+  display_name = "Tenant-terraform"
   project      = local.project     
 }
