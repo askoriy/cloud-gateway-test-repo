@@ -6,5 +6,6 @@ locals {
 resource "google_identity_platform_tenant" "tenant1" {
   provider     = google-beta
   display_name = "Tenant-1"
-  project      = local.project     
+  project      = local.project   
+  credentials  =  "key.json"
 }

@@ -2,8 +2,8 @@ name: 'Terraform GitHub Actions'
 on:
   - push
 
-# env: 
-#   GOOGLE_APPLICATION_CREDENTIALS: key.json
+env: 
+  GOOGLE_APPLICATION_CREDENTIALS: key.json
 
 jobs:
   terraform:
@@ -18,18 +18,16 @@ jobs:
           version: '275.0.0'
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_105 }}
 
-      # - run: |
-      #     ls -la 
-      #     pwd
+      - run: |
+          ls -la 
+          pwd
       
-      # - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
-      #   run: echo "::set-env name=GOOGLE_APPLICATION_CREDENTIALS::$(echo "testtest")"
+      - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
+        run: GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.SERVICE_ACCOUNT_105}} | base64 -d)
         
-      # - name: Create OpenApi document
-      #   run: |
-      #       echo $GOOGLE_APPLICATION_CREDENTIALS
-      #       envsubst < ./key_templ.json > ./key.json
-      #       cat ./key.json
+      - name: Create OpenApi document
+        run: |
+            echo $GOOGLE_APPLICATION_CREDENTIALS
 
       # - name: Debug
       #   run: | 
