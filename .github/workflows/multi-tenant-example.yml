@@ -77,5 +77,5 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       - name: 'Use Terraform Output'
-        run: echo ${{ steps.terraform.outputs.tenant_name }}
+        run: echo ${{ steps.terraform.outputs.tf_actions_output }}
       
