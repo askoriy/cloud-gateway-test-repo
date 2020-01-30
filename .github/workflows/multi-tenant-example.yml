@@ -78,7 +78,7 @@ jobs:
 
       - name: 'Use Terraform Output'
         run: | 
-          TENANT_NAME_1=$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name.value')
+          TENANT_NAME_1=$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name[0]')
           echo $TENANT_NAME_1
 
       
