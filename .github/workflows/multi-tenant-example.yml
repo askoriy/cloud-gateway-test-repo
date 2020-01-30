@@ -80,7 +80,5 @@ jobs:
         run: | 
           TENANT_NAME_1=$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name.value')
           echo $TENANT_NAME_1
-          TENANT_NAME_2=$(echo '${{ steps.terraform.outputs.tf_actions_output }}' | jq -r '.tenant_name_2.value')
-          echo $TENANT_NAME_2
 
       
