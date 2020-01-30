@@ -23,13 +23,17 @@ jobs:
           pwd
       
       - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
-        run: ::set-env name=GOOGLE_APPLICATION_CREDENTIALS::$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
+        run: |
+          GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
+          envsubst < ./key_templ.json > ./key.json
+          cat ./key.json
+          echo $GOOGLE_APPLICATION_CREDENTIALS
         
       - name: Create OpenApi document
         run: |
             echo $GOOGLE_APPLICATION_CREDENTIALS
-            envsubst < ./key_templ.json > ./key.json
             cat ./key.json
+           
 
       # - name: Debug
       #   run: | 
