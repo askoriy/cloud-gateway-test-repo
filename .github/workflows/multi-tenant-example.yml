@@ -33,6 +33,7 @@ jobs:
           tf_actions_working_dir: './frontend-multi-tenant/terraform/'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
