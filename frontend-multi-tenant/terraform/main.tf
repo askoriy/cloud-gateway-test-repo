@@ -24,5 +24,5 @@ resource "google_identity_platform_tenant" "tenant_tf" {
 }
 
 output "tenant_name" {
-  value = [google_identity_platform_tenant.tenant_tf.*.display_name]
+  value = [google_identity_platform_tenant.tenant_tf.display_name]
 }
