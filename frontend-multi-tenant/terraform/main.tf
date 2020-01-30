@@ -33,5 +33,5 @@ output "tenant_name" {
 }
 
 output "tenant_name_2" {
-  value = google_identity_platform_tenant.*.name
+  value = [google_identity_platform_tenant.*.name]
 }
