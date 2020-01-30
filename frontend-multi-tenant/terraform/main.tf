@@ -21,3 +21,7 @@ resource "google_identity_platform_tenant" "tenant_tf" {
   display_name = "Tenant-terraform"
   project      = local.project     
 }
+
+output "tenant_name" {
+  name = google_identity_platform_tenant.tenant_tf.name
+}
