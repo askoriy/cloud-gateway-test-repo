@@ -29,11 +29,6 @@ jobs:
         env: 
           GOOGLE_APPLICATION_CREDENTIALS: $(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
 
-      - name: Create OpenApi document
-        run: |
-            cat ./key.json
-           
-
       # - name: Debug
       #   run: | 
       #     cat ./key.json
