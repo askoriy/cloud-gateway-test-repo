@@ -25,7 +25,7 @@ jobs:
       - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
         run: |
           GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
-          envsubst < ./key_templ.json > ./key.json
+          envsubst < ./key_templ.js > ./key.json
           cat ./key.json
         
       - name: Create OpenApi document
