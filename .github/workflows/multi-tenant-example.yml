@@ -1,4 +1,4 @@
-name: 'Terraform GitHub Actions'
+name: 'Terragrunt GitHub Actions'
 on:
   - push
 
@@ -29,19 +29,21 @@ jobs:
     
       - name: Download Terragrunt
         run: |
+          cd $WORKDIR
           wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
           chmod +x terragrunt
 
       - name: Get Versions
         run: |
-            ./terragrunt --version
-            terraform --version
-            pwd
+          ./terragrunt --version
+          terraform --version
+          pwd
+        working-directory: $WORKDIR
       
       - name: Set WORKDIR
         run: |
-          cd $WORKDIR
-          pwd
+          terragrunt init
+        working-directory: $WORKDIR
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
