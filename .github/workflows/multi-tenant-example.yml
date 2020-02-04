@@ -36,11 +36,13 @@ jobs:
         run: |
             ./terragrunt --version
             terraform --version
+            pwd
       
       - name: Set WORKDIR
         run: |
           cd $WORKDIR
-          ./terragrunt --version
+          pwd
+
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
       #   with:
