@@ -27,7 +27,7 @@ function getRecaptchaMode() {
 
 
 /**
- * @return {string} The email signInMethod from the configuration.
+ * @return {string} The email signInMethod from the configuration. 
  */
 function getEmailSignInMethod() {
   var config = parseQueryString(location.hash);
