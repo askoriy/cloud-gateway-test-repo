@@ -37,6 +37,7 @@ jobs:
       - name: Get Versions
         run: |
           cd $WORKDIR
+          ls -la
           ./terragrunt --version
           terraform --version
           pwd
@@ -45,6 +46,7 @@ jobs:
       - name: Terragrunt init
         run: |
           cd $WORKDIR
+          ls -la
           ./terragrunt init 
        
       - name: Terrugrunt plan
