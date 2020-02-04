@@ -35,14 +35,14 @@ jobs:
 
       - name: Get Versions
         run: |
-          ./$WORKDIR/terragrunt --version
+          $WORKDIR/terragrunt --version
           terraform --version
           pwd
         
       
       - name: Terragrunt init
         run: |
-          ./$WORKDIR/terragrunt init
+          $WORKDIR/terragrunt init
         
 
       # - name: 'Terraform Init'
