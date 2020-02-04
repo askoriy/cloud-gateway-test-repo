@@ -34,16 +34,16 @@ jobs:
           chmod +x terragrunt
 
       - name: Get Versions
-        working-directory: $WORKDIR
         run: |
+          cd $WORKDIR
           ./terragrunt --version
           terraform --version
           pwd
         
       
-      - name: Set WORKDIR
-        working-directory: $WORKDIR
+      - name: Terragrunt init
         run: |
+          cd $WORKDIR
           terragrunt init
         
 
