@@ -34,16 +34,18 @@ jobs:
           chmod +x terragrunt
 
       - name: Get Versions
+        working-directory: $WORKDIR
         run: |
           ./terragrunt --version
           terraform --version
           pwd
-        working-directory: $WORKDIR
+        
       
       - name: Set WORKDIR
+        working-directory: $WORKDIR
         run: |
           terragrunt init
-        working-directory: $WORKDIR
+        
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
