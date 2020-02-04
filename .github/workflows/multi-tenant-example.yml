@@ -21,6 +21,7 @@ jobs:
       - run: |
           ls -la 
           pwd
+          echo $GITHUB_WORKSPACE
       
       - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
         run: |
@@ -29,22 +30,27 @@ jobs:
     
       - name: Download Terragrunt
         run: |
+          cd $WORKDIR
           wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
           chmod +x terragrunt
-          cp terragrunt $WORKDIR/terrugrunt
 
       - name: Get Versions
         run: |
-          $WORKDIR/terragrunt --version
+          cd $WORKDIR
+          ./terragrunt --version
           terraform --version
           pwd
         
       
       - name: Terragrunt init
-        run: $WORKDIR/terragrunt init
+        run: |
+          cd $WORKDIR
+          ./terragrunt init
        
       - name: Terrugrunt plan
-        run: $WORKDIR/terragrunt plan
+        run: |
+          cd $WORKDIR
+          ./terragrunt plan
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
