@@ -25,9 +25,15 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
           echo $GOOGLE_APPLICATION_CREDENTIALS > ./frontend-multi-tenant/tenants-factory/key.json
     
-      - name: Terrgrunt init
+      - name: Download Terragrunt
         run: |
-          terragrunt --version
+          wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
+          chmod +x terragrunt
+
+      - name: Get Versions
+        run: |
+            ./terragrunt --version
+            terraform --version
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
