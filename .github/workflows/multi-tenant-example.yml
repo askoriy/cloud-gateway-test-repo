@@ -23,44 +23,38 @@ jobs:
           pwd
           echo $GITHUB_WORKSPACE
       
+      - name: Set Google GOOGLE_APPLICATION_CREDENTIALS
+        run: |
+          GOOGLE_APPLICATION_CREDENTIALS=$(echo ${{ secrets.CI_CD_PIPELINE}} | base64 -d)
+          echo $GOOGLE_APPLICATION_CREDENTIALS > ./frontend-multi-tenant/tenants-factory/key.json
     
-      - uses: actions/checkout@v2
-        with:
-          repository: 'extenda/tf-infra-gcp'
-          ref: 'feature/ELY-132'
-          path: './tf-infra-gcp'
+      - name: Download Terragrunt
+        run: |
+          cd $WORKDIR
+          wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
+          chmod +x terragrunt
 
-
-      - run: |
-         ls -la 
-         pwd
-      # - name: Download Terragrunt
-      #   run: |
-      #     cd $WORKDIR
-      #     wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
-      #     chmod +x terragrunt
-
-      # - name: Get Versions
-      #   run: |
-      #     cd $WORKDIR
-      #     ls -la
-      #     ./terragrunt --version
-      #     terraform --version
-      #     pwd
+      - name: Get Versions
+        run: |
+          cd $WORKDIR
+          ls -la
+          ./terragrunt --version
+          terraform --version
+          pwd
         
       
-      # - name: Terragrunt init
-      #   run: |
-      #     cd $WORKDIR
-      #     ls -la
-      #     ./terragrunt init 
+      - name: Terragrunt init
+        run: |
+          cd $WORKDIR
+          ls -la
+          ./terragrunt init 
        
-      # - name: Terrugrunt plan
-      #   run: |
-      #     cd $WORKDIR
-      #     ./terragrunt plan
-      #   env: 
-      #     GOOGLE_APPLICATION_CREDENTIALS: ./key.json
+      - name: Terrugrunt plan
+        run: |
+          cd $WORKDIR
+          ./terragrunt plan
+        env: 
+          GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
