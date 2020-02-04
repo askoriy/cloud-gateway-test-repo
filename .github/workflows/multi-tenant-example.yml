@@ -2,6 +2,8 @@ name: 'Terraform GitHub Actions'
 on:
   - push
 
+env:
+  WORKDIR: ./frontend-multi-tenant/tenants-factory/
 
 jobs:
   terraform:
@@ -34,7 +36,11 @@ jobs:
         run: |
             ./terragrunt --version
             terraform --version
-
+      
+      - name: Set WORKDIR
+        run: |
+        cd $WORKDIR
+        ./terragrunt --version
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
       #   with:
