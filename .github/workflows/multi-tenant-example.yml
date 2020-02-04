@@ -3,7 +3,7 @@ on:
   - push
 
 env:
-  WORKDIR: ./frontend-multi-tenant/tenants-factory/
+  WORKDIR: ./frontend-multi-tenant/tenants-factory
 
 jobs:
   terraform:
@@ -41,9 +41,10 @@ jobs:
         
       
       - name: Terragrunt init
-        run: |
-          $WORKDIR/terragrunt init
-        
+        run: $WORKDIR/terragrunt init
+       
+      - name: Terrugrunt plan
+        run: $WORKDIR/terragrunt plan
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
