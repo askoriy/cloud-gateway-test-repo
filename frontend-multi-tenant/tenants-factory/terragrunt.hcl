@@ -1,8 +1,9 @@
 remote_state {
   backend = "gcs"
   config = {
-    bucket   = "terraform-cloud-run"
-    prefix   = "${path_relative_to_include()}"
+    bucket = "terraform-cloud-run"
+    prefix = "${path_relative_to_include()}"
+    key    = ./key.json
   }
 }
 

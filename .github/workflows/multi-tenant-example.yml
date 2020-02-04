@@ -45,7 +45,7 @@ jobs:
       - name: Terragrunt init
         run: |
           cd $WORKDIR
-          ./terragrunt -i ./key.json init 
+          ./terragrunt init 
        
       - name: Terrugrunt plan
         run: |
