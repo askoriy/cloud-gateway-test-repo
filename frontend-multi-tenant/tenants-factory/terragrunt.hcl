@@ -3,7 +3,7 @@ remote_state {
   config = {
     bucket = "terraform-cloud-run"
     prefix = "${path_relative_to_include()}"
-    key    = ./key.json
+    key    = "./key.json"
   }
 }
 
