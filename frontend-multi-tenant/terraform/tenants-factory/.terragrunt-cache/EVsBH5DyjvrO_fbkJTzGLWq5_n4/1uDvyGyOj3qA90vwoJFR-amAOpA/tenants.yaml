@@ -1,0 +1,26 @@
+# allow_password_signup set `true` if you wqant to enable Email/Password Identity Provider
+# create_idp_resource_google set `true` if you want to enable Google Identity Provider and provide `app_id` and `secret` in `idp_resource_google_config`
+# create_idp_resource_microsoft set `true` if you want to enable Micfosoft Identity Provider provide `app_id` and `secret` in `idp_resource_microsoft_config`
+tenant_names:
+  EXTENDA: 
+    allow_password_signup: true 
+    create_idp_resource_google: true
+    idp_resource_google_config:
+      app_id: "12345"
+      secret: "qwert"
+    create_idp_resource_microsoft: false
+  AUCHAN:
+    allow_password_signup: true
+    create_idp_resource_google: false
+    create_idp_resource_microsoft: false
+  SPORTLIFE:
+    allow_password_signup: true
+    create_idp_resource_google: false
+    create_idp_resource_microsoft: true
+    idp_resource_microsoft_config:
+      app_id: "12345"
+      secret: "qwert"
+  HM-CLIENT: 
+    allow_password_signup: true
+    create_idp_resource_google: false
+    create_idp_resource_microsoft: false
