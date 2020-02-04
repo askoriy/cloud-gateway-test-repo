@@ -53,6 +53,8 @@ jobs:
         run: |
           cd $WORKDIR
           ./terragrunt plan
+        env: 
+          GOOGLE_APPLICATION_CREDENTIALS: ./key.json
 
       # - name: 'Terraform Init'
       #   uses: hashicorp/terraform-github-actions@master
