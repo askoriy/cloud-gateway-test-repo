@@ -29,22 +29,20 @@ jobs:
     
       - name: Download Terragrunt
         run: |
-          cd $WORKDIR
           wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.9/terragrunt_linux_amd64
           chmod +x terragrunt
+          cp terragrunt $WORKDIR/terrugrunt
 
       - name: Get Versions
         run: |
-          cd $WORKDIR
-          ./terragrunt --version
+          ./$WORKDIR/terragrunt --version
           terraform --version
           pwd
         
       
       - name: Terragrunt init
         run: |
-          cd $WORKDIR
-          terragrunt init
+          ./$WORKDIR/terragrunt init
         
 
       # - name: 'Terraform Init'
